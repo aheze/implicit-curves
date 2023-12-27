@@ -8,15 +8,6 @@
 
 import SwiftUI
 
-
-
-// def vertices_from_extremes(dim: int, pmin: Point, pmax: Point, fn: Func) -> list[ValuedPoint]:
-//    """Requires pmin.x ≤ pmax.x, pmin.y ≤ pmax.y"""
-//    w = pmax - pmin
-//    return [
-//        ValuedPoint(np.array([pmin[d] + (i >> d & 1) * w[d] for d in range(dim)])).calc(fn) for i in range(1 << dim)
-//    ]
-
 func verticesFromExtremes(
     minX: Double,
     maxX: Double,
@@ -39,7 +30,6 @@ func verticesFromExtremes(
 }
 
 struct Frame {
-    
     var bL: ValuedPoint
     var bR: ValuedPoint
     var tL: ValuedPoint
@@ -47,7 +37,7 @@ struct Frame {
 
     // In 2 dimensions, vertices = [bottom-left, bottom-right, top-left, top-right] points
     var vertices: [ValuedPoint] {
-        [bL, bR, tL, tR]
+        [self.bL, self.bR, self.tL, self.tR]
     }
 }
 
@@ -67,11 +57,11 @@ class Cell {
     }
 
     func computeChildren(function: (Point) -> Double) {
-        guard children.isEmpty else {
+        guard self.children.isEmpty else {
             fatalError("Already has children")
         }
 
-        let vertices = frame.vertices
+        let vertices = self.frame.vertices
         for index in vertices.indices {
             let vertex = vertices[index]
 
@@ -80,11 +70,52 @@ class Cell {
             let minY = (frame.bL.point.y + vertex.point.y) / 2
             let maxY = (frame.tR.point.y + vertex.point.y) / 2
             let frame = verticesFromExtremes(minX: minX, maxX: maxX, minY: minY, maxY: maxY, function: function)
-            
+
             let newQuad = Cell(frame: frame, depth: depth + 1, children: [], parent: self, childDirection: index)
-            children.append(newQuad)
+            self.children.append(newQuad)
         }
     }
+
+    func getLeavesInDirection(axis: Int, direction: Int) -> AnyIterator<Cell> {
+        return AnyIterator {
+            if !self.children.isEmpty {
+                // 01 (1) for x axis (horizontal)
+                // 10 (2) for y axis (vertical)
+                let mask = 1 << axis
+
+                // 2 dimensions
+                // 00 (0)
+                // 01 (1)
+                // 10 (2)
+                // 11 (3)
+                for index in 0 ..< 4 {
+                    // (index & mask) possible values and their meanings:
+                    // For x axis (mask = 01):       For y axis (mask = 10):
+                    // 00 & 01 = 00 (0)              00 & 10 = 00 (0)         -> bL
+                    // 01 & 01 = 01 (1)              01 & 10 = 00 (0)         -> bR
+                    // 10 & 01 = 00 (0)              10 & 10 = 10 (2)         -> tL
+                    // 11 & 01 = 01 (1)              11 & 10 = 10 (2)         -> tR
+
+                    // For the x-axis, children with an index of 1 or 3 (binary 01 or 11) will satisfy ((index & mask) > 0).
+                    // For the y-axis, children with an index of 2 or 3 (binary 10 or 11) will satisfy this condition.
+                    // The comparison ((index & mask) > 0) == (direction > 0) ensures that only children on the specified direction are considered.
+                    // If direction is 0, it targets the negative direction (left or bottom),
+                    // and if direction is 1, it targets the positive direction (right or top).
+                    if ((index & mask) > 0) == (direction > 0) {
+                        let leaves = self.children[index].getLeavesInDirection(axis: axis, direction: direction)
+                        for leaf in leaves {
+                            return leaf
+                        }
+                    }
+                }
+
+                return nil
+            } else {
+                return self
+            }
+        }
+    }
+
 }
 
 // @dataclass
@@ -118,8 +149,6 @@ class Cell {
 //    def get_dual(self, fn: Func) -> ValuedPoint:
 //        return ValuedPoint.midpoint(self.vertices[0], self.vertices[-1], fn)
 
-
-
 /*
     axis: 0 = x, 1 = y
     direction: 0 = negative, 1 = positive
@@ -130,4 +159,4 @@ class Cell {
     Example: getSubcell(axis: 1, direction: 1)
         returns the cells on the tL and tR
  */
-//func getSubcell(axis: Int, direction: Int) {}
+// func getSubcell(axis: Int, direction: Int) {}
