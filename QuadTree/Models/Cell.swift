@@ -46,6 +46,9 @@ class Cell {
     var depth: Int
     var children: [Cell]
     var parent: Cell?
+
+    // 0, 1, 2, or 3
+    // 4 corners
     var childDirection: Int
 
     init(frame: Frame, depth: Int, children: [Cell], parent: Cell?, childDirection: Int) {
@@ -116,47 +119,77 @@ class Cell {
         }
     }
 
+    // Same arguments as get_leaves_in_direction.
+    // Returns the quad (with depth <= self.depth) that shares a (dim-1)-cell
+    // with self, where that (dim-1)-cell is the side of self defined by
+    // axis and dir.
+    func walkInDirection(axis: Int, direction: Int) -> Cell? {
+        // 01 (1) for x axis (horizontal)
+        // 10 (2) for y axis (vertical)
+        let mask = 1 << axis
+
+        // childDirection possible values:
+        // 00 (0) bL
+        // 01 (1) bR
+        // 10 (2) tL
+        // 11 (3) tR
+
+        // (childDirection & mask) returns true if on the positive side
+        if ((self.childDirection & mask) > 0) == (direction > 0) {
+            // on the right side of the parent cell and moving right (or analogous)
+            // so need to go up through the parent's parent
+
+            if let parent {
+                let parentWalked = parent.walkInDirection(axis: axis, direction: direction)
+
+                if let parentWalked, !parentWalked.children.isEmpty {
+                    // end at same depth, in the adjacent cell
+                    // from a to b
+                    //
+                    // +---+---+ +---+---+
+                    // |   |   | |   |   |
+                    // +---+---+ +---+---+
+                    // |   | a | | b |   |
+                    // +---+---+ +---+---+
+                    //
+
+                    // If you are moving along the x-axis and childDirection is 01 (bottom-right),
+                    // XOR with 01 (x-axis mask) changes it to 00 (bottom-left).
+                    //
+                    // If moving along the y-axis and childDirection is 10 (top-left),
+                    // XOR with 10 (y-axis mask) changes it to 00 (bottom-left).
+                    return parentWalked.children[self.childDirection ^ mask]
+                } else {
+                    // end at lesser depth (bigger quad)
+                    return parentWalked
+                }
+            } else {
+                return nil
+            }
+        } else {
+            // try to get a sibling cell
+            if let parent {
+                return parent.children[self.childDirection ^ mask]
+            } else {
+                return nil
+            }
+        }
+    }
 }
 
-// @dataclass
-// class Cell(MinimalCell):
-//    depth: int
-//    # Children go in same order: bottom-left, bottom-right, top-left, top-right
-//    children: list[Cell]
-//    parent: Cell
-//    child_direction: int
+// unused
+//func walkLeavesInDirection(axis: Int, direction: Int) -> AnyIterator<Cell> {
+//    let walked = self.walkInDirection(axis: axis, direction: direction)
 //
-//    def compute_children(self, fn: Func) -> None:
-//        assert self.children == []
-//        for i, vertex in enumerate(self.vertices):
-//            pmin = (self.vertices[0].pos + vertex.pos) / 2
-//            pmax = (self.vertices[-1].pos + vertex.pos) / 2
-//            vertices = vertices_from_extremes(self.dim, pmin, pmax, fn)
-//            new_quad = Cell(self.dim, vertices, self.depth + 1, [], self, i)
-//            self.children.append(new_quad)
-
-// @dataclass
-// class MinimalCell:
-//    dim: int
-//    # In 2 dimensions, vertices = [bottom-left, bottom-right, top-left, top-right] points
-//    vertices: list[ValuedPoint]
-//
-//    def get_subcell(self, axis: int, dir: int) -> MinimalCell:
-//        """Given an n-cell, this returns an (n-1)-cell (with half the vertices)"""
-//        m = 1 << axis
-//        return MinimalCell(self.dim - 1, [v for i, v in enumerate(self.vertices) if (i & m > 0) == dir])
-//
-//    def get_dual(self, fn: Func) -> ValuedPoint:
-//        return ValuedPoint.midpoint(self.vertices[0], self.vertices[-1], fn)
-
-/*
-    axis: 0 = x, 1 = y
-    direction: 0 = negative, 1 = positive
-
-    Example: getSubcell(axis: 0, direction: 1)
-        returns the cells on the tR and bR
-
-    Example: getSubcell(axis: 1, direction: 1)
-        returns the cells on the tL and tR
- */
-// func getSubcell(axis: Int, direction: Int) {}
+//    return AnyIterator {
+//        if let walked {
+//            let leaves = walked.getLeavesInDirection(axis: axis, direction: direction)
+//            for leaf in leaves {
+//                return leaf
+//            }
+//            return nil
+//        } else {
+//            return nil
+//        }
+//    }
+//}
