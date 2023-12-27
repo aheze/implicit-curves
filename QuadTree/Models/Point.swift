@@ -46,3 +46,52 @@ struct ValuedPoint {
         return valuedPoint
     }
 }
+
+func binarySearchZero(
+    p1: ValuedPoint,
+    p2: ValuedPoint,
+    function: (Point) -> Double,
+    tolerance: Double
+) -> (valuedPoint: ValuedPoint, isZero: Bool) {
+    let distanceX = abs(p2.point.x - p1.point.x)
+    let distanceY = abs(p2.point.y - p1.point.y)
+    
+    // Use isZero to make sure it's not an asymptote like at x=0 on f(x,y) = 1/(xy) - 1
+    if distanceX < tolerance || distanceY < tolerance {
+        // Binary search stop condition: too small to matter
+        let valuedPoint = ValuedPoint.intersectZero(p1: p1, p2: p2, function: function)
+        
+        let isZero: Bool = {
+            if valuedPoint.value == 0 {
+                return true
+            }
+            
+            if
+                // prevent ≈inf from registering as a zero
+                abs(valuedPoint.value) < 1e200,
+                (valuedPoint.value - p1.value).sign == (p2.value - valuedPoint.value).sign
+            {
+                return true
+            }
+            
+            return false
+        }()
+        
+        return (valuedPoint, isZero)
+    } else {
+        // binary search
+        
+        let midpoint = ValuedPoint.midpoint(p1: p1, p2: p2, function: function)
+        if midpoint.value == 0 {
+            return (midpoint, true)
+            
+        } else if (midpoint.value > 0) == (p1.value > 0) {
+            // (Group "0" with negatives)
+            
+            return binarySearchZero(p1: midpoint, p2: p2, function: function, tolerance: tolerance)
+        } else {
+            // negatives
+            return binarySearchZero(p1: p1, p2: midpoint, function: function, tolerance: tolerance)
+        }
+    }
+}
