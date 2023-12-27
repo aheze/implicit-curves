@@ -10,7 +10,7 @@
 		3CF755E82B3CAD8A00E4708E /* QuadTreeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF755E72B3CAD8A00E4708E /* QuadTreeApp.swift */; };
 		3CF755EA2B3CAD8A00E4708E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF755E92B3CAD8A00E4708E /* ContentView.swift */; };
 		3CF755EC2B3CAD8B00E4708E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CF755EB2B3CAD8B00E4708E /* Assets.xcassets */; };
-		3CF755F02B3CAD8B00E4708E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CF755EF2B3CAD8B00E4708E /* Preview Assets.xcassets */; };
+		3CF755F72B3CADDD00E4708E /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF755F62B3CADDD00E4708E /* Cell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,7 +19,7 @@
 		3CF755E92B3CAD8A00E4708E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3CF755EB2B3CAD8B00E4708E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3CF755ED2B3CAD8B00E4708E /* QuadTree.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QuadTree.entitlements; sourceTree = "<group>"; };
-		3CF755EF2B3CAD8B00E4708E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3CF755F62B3CADDD00E4708E /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,20 +53,20 @@
 			isa = PBXGroup;
 			children = (
 				3CF755E72B3CAD8A00E4708E /* QuadTreeApp.swift */,
+				3CF755F82B3CADE100E4708E /* Models */,
 				3CF755E92B3CAD8A00E4708E /* ContentView.swift */,
 				3CF755EB2B3CAD8B00E4708E /* Assets.xcassets */,
 				3CF755ED2B3CAD8B00E4708E /* QuadTree.entitlements */,
-				3CF755EE2B3CAD8B00E4708E /* Preview Content */,
 			);
 			path = QuadTree;
 			sourceTree = "<group>";
 		};
-		3CF755EE2B3CAD8B00E4708E /* Preview Content */ = {
+		3CF755F82B3CADE100E4708E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3CF755EF2B3CAD8B00E4708E /* Preview Assets.xcassets */,
+				3CF755F62B3CADDD00E4708E /* Cell.swift */,
 			);
-			path = "Preview Content";
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +127,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3CF755F02B3CAD8B00E4708E /* Preview Assets.xcassets in Resources */,
 				3CF755EC2B3CAD8B00E4708E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +140,7 @@
 			files = (
 				3CF755EA2B3CAD8A00E4708E /* ContentView.swift in Sources */,
 				3CF755E82B3CAD8A00E4708E /* QuadTreeApp.swift in Sources */,
+				3CF755F72B3CADDD00E4708E /* Cell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +269,6 @@
 				CODE_SIGN_ENTITLEMENTS = QuadTree/QuadTree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"QuadTree/Preview Content\"";
 				DEVELOPMENT_TEAM = WV6XDLHK3W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -307,7 +306,6 @@
 				CODE_SIGN_ENTITLEMENTS = QuadTree/QuadTree.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"QuadTree/Preview Content\"";
 				DEVELOPMENT_TEAM = WV6XDLHK3W;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
