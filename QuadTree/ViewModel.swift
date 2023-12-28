@@ -19,15 +19,12 @@ class ViewModel: ObservableObject {
 
     // function to render
     func function(point: Point) -> Double {
-//        return point.y * (x-y)^2 = 4x+8
         let x = point.x
         let y = point.y
-        
-        return y * pow((x - y), 2) - (4 * x) - 8
-        
-//        return pow(point.x, 2) + pow(point.y, 2) - 10
-//        return tan(pow(point.x, 2) + pow(point.y, 2)) - 1
-//        return 1
+
+//        return y * pow((x - y), 2) - (4 * x) - 8
+//        return pow(x, 2) + pow(y, 2) - 5
+        return tan(pow(x, 2) + pow(y, 2)) - 1
     }
 
     // MARK: - Rendering
@@ -43,22 +40,20 @@ class ViewModel: ObservableObject {
             xMax: xDomain.upperBound,
             yMin: yDomain.lowerBound,
             yMax: yDomain.upperBound,
-            minDepth: 3,
-            maxCells: 5000,
+            minDepth: 6,
+            maxCells: 15000,
             tolerance: domainWidth / 1000
         )
 
         var displayedCells = [DisplayedCell]()
         root.levelOrderTraversal { cell in
-            
+
             let frame = CGRect(
                 x: cell.frame.bL.point.x,
                 y: cell.frame.bL.point.y,
                 width: cell.frame.bR.point.x - cell.frame.bL.point.x,
                 height: cell.frame.tL.point.y - cell.frame.bL.point.y
             )
-
-            // half of the viewport
 
             var adjustedFrame = CGRect(
                 x: viewportSize.width / 2 + (frame.minX / domainWidth) * viewportSize.width,
@@ -74,7 +69,7 @@ class ViewModel: ObservableObject {
             displayedCells.append(displayedCell)
         }
 
-        print("root: \(root) \(displayedCells.count). \(timer)")
+        print("root: \(root), count: \(displayedCells.count), time: \(timer)")
 
         self.displayedCells = displayedCells
     }
