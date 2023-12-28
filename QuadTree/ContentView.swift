@@ -71,7 +71,7 @@ struct ContentView: View {
         Chart {
             ForEach(viewModel.graphCurves) { graphCurve in
                 ForEach(graphCurve.points, id: \.x) { point in
-                    PointMark(x: .value("x", point.x), y: .value("y", point.y))
+                    LineMark(x: .value("x", point.x), y: .value("y", point.y))
                         .foregroundStyle(Color.black)
                         .symbolSize(0.5)
                 }

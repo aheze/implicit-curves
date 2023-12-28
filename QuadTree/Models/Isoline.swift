@@ -135,7 +135,7 @@ class Triangulator {
             } else {
                 // a is a small cell, b is a big cell
                 // OR: same depth, a and b are adjacent horizontally
-                let edgeDual = getEdgeDual(p1: a.frame.tR, p2: b.frame.bR)
+                let edgeDual = getEdgeDual(p1: a.frame.tR, p2: a.frame.bR)
                 
                 // result of code for same depth
                 // +---+---+---+---+
@@ -190,7 +190,7 @@ class Triangulator {
                 )
                 addFourTriangles(triangles: triangles)
             } else {
-                let edgeDual = getEdgeDual(p1: b.frame.tL, p2: b.frame.tR)
+                let edgeDual = getEdgeDual(p1: a.frame.tL, p2: a.frame.tR)
                 let triangles = Global.fourTriangles(
                     a: a.frame.tL,
                     b: faceDualB,
@@ -321,7 +321,6 @@ class CurveTracer {
         var curves = [[Point]]()
         
         for triangle in triangles {
-//            print("triangle.visited? \(triangle.visited)")
             if !triangle.visited, triangle.next != nil {
                 activeCurve = []
                 marchTriangle(triangle: triangle)
