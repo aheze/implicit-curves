@@ -8,6 +8,7 @@
 
 import Collections
 import Foundation
+import simd // for sign
 
 enum Global {}
 
@@ -58,7 +59,7 @@ extension Global {
                 if
                     // prevent ≈inf from registering as a zero
                     abs(valuedPoint.value) < 1e200,
-                    (valuedPoint.value - p1.value).sign == (p2.value - valuedPoint.value).sign
+                    sign(valuedPoint.value - p1.value) == sign(p2.value - valuedPoint.value)
                 {
                     return true
                 }
@@ -157,7 +158,7 @@ extension Global {
             // e.g. by incorporating gradient or second-derivative
             // tests, etc., to cancel descending in approximately linear regions
             for valuedPoint in cell.frame.vertices.dropFirst() {
-                if valuedPoint.value.sign != cell.frame.bL.value.sign {
+                if sign(valuedPoint.value) != sign(cell.frame.bL.value) {
                     return true
                 }
             }
