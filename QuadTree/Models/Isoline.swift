@@ -301,3 +301,79 @@ extension Triangulator {
         return ValuedPoint.midpoint(p1: frame.bL, p2: frame.tR, function: function)
     }
 }
+
+class CurveTracer {
+    var triangles: [Triangle]
+    var function: (Point) -> Double
+    var tolerance: Double
+    
+    var activeCurve = [Point]()
+    
+    init(triangles: [Triangle], function: @escaping (Point) -> Double, tolerance: Double) {
+        self.triangles = triangles
+        self.function = function
+        self.tolerance = tolerance
+    }
+    
+    func trace() -> [[Point]] {
+        var curves = [[Point]]()
+        
+        for triangle in triangles {
+            if !triangle.visited, let next = triangle.next {
+                activeCurve = []
+                marchTriangle(triangle: triangle)
+                
+                // triangle.next is not None, so there should be at least one segment
+                curves.append(activeCurve)
+            }
+        }
+        
+        return curves
+    }
+    
+    func marchTriangle(triangle: Triangle) {
+        let startTriangle = triangle
+        var closedLoop = false
+        
+        // Iterate backwards to the start of a connected curve
+        while let previous = triangle.previous {
+            
+            // check if points to the same address
+            if previous === startTriangle {
+                closedLoop = true
+                break
+            }
+        }
+        
+        var triangle: Triangle? = triangle
+        while let unwrappedTriangle = triangle, !unwrappedTriangle.visited {
+            for index in 0 ..< 3 {
+                let startIndex = index
+                let endIndex = (index + 1) % 3 // cycle through the vertices
+                marchEdge(p1: unwrappedTriangle.vertices[startIndex], p2: unwrappedTriangle.vertices[endIndex])
+            }
+            unwrappedTriangle.visited = true
+            triangle = unwrappedTriangle.next
+        }
+        
+        if closedLoop {
+            // check if it's not empty
+            if let first = activeCurve.first {
+                // close back the loop
+                activeCurve.append(first)
+            } else {
+                print("no first.")
+            }
+        }
+    }
+    
+    func marchEdge(p1: ValuedPoint, p2: ValuedPoint) {
+        // (Group 0 with negatives)
+        if p1.value > 0, p2.value <= 0 {
+            let (intersection, isZero) = Global.binarySearchZero(p1: p1, p2: p2, function: function, tolerance: tolerance)
+            if isZero {
+                activeCurve.append(intersection.point)
+            }
+        }
+    }
+}
