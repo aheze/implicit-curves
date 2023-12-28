@@ -61,6 +61,10 @@ class Triangulator {
     }
     
     func triangulate(inside quad: Cell) {
+        guard !quad.children.isEmpty else {
+            return
+        }
+        
         for child in quad.children {
             triangulate(inside: child)
         }
@@ -317,7 +321,8 @@ class CurveTracer {
         var curves = [[Point]]()
         
         for triangle in triangles {
-            if !triangle.visited, let next = triangle.next {
+//            print("triangle.visited? \(triangle.visited)")
+            if !triangle.visited, triangle.next != nil {
                 activeCurve = []
                 marchTriangle(triangle: triangle)
                 
@@ -331,10 +336,12 @@ class CurveTracer {
     
     func marchTriangle(triangle: Triangle) {
         let startTriangle = triangle
+        var triangle: Triangle? = triangle
         var closedLoop = false
         
         // Iterate backwards to the start of a connected curve
-        while let previous = triangle.previous {
+        while let previous = triangle?.previous {
+            triangle = previous
             // check if points to the same address
             if previous === startTriangle {
                 closedLoop = true
@@ -342,7 +349,6 @@ class CurveTracer {
             }
         }
         
-        var triangle: Triangle? = triangle
         while let unwrappedTriangle = triangle, !unwrappedTriangle.visited {
             for index in 0 ..< 3 {
                 let startIndex = index

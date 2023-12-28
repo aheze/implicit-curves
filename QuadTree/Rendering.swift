@@ -8,6 +8,11 @@
 
 import SwiftUI
 
+struct GraphCurve: Identifiable {
+    var id = UUID()
+    var points: [Point]
+}
+
 struct DisplayedCell: Identifiable {
     var id = UUID()
     var cell: Cell

@@ -30,6 +30,7 @@ class ViewModel: ObservableObject {
     // MARK: - Rendering
 
     @Published var displayedCells = [DisplayedCell]()
+    @Published var graphCurves = [GraphCurve]()
 
     init() {
         let timer = TimeElapsed()
@@ -70,7 +71,26 @@ class ViewModel: ObservableObject {
         }
 
         print("root: \(root), count: \(displayedCells.count), time: \(timer)")
-
         self.displayedCells = displayedCells
+        
+        let curves = Global.plotIsoline(
+            function: function,
+            xMin: xDomain.lowerBound,
+            xMax: xDomain.upperBound,
+            yMin: yDomain.lowerBound,
+            yMax: yDomain.upperBound
+        )
+        
+        print("curves: \(curves.count)")
+        
+        let graphCurves = curves.map { points in
+            GraphCurve(points: points)
+        }
+        
+        self.graphCurves = graphCurves
+        
+        
+
+        
     }
 }

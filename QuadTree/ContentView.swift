@@ -6,6 +6,7 @@
 //  Copyright © 2023 Andrew Zheng. All rights reserved.
 //
 
+import Charts
 import SwiftUI
 
 struct ContentView: View {
@@ -47,20 +48,35 @@ struct ContentView: View {
                                     return .black
                                 }
                             }()
-                            
-//                            if displayedCell.cell.depth == 4 {
-                                Rectangle()
-                                    .stroke(color, lineWidth: 1)
-                                    .frame(width: displayedCell.frame.width, height: displayedCell.frame.height)
-                                    .offset(x: displayedCell.frame.minX, y: displayedCell.frame.minY)
-//                            }
+
+                            Rectangle()
+                                .stroke(color, lineWidth: 1)
+                                .frame(width: displayedCell.frame.width, height: displayedCell.frame.height)
+                                .offset(x: displayedCell.frame.minX, y: displayedCell.frame.minY)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
+                .drawingGroup()
+                .opacity(0.1)
+                .overlay {
+                    chart
+                }
                 .border(Color.blue.gradient.opacity(0.5), width: 2)
         }
         .padding()
+    }
+
+    var chart: some View {
+        Chart {
+            ForEach(viewModel.graphCurves) { graphCurve in
+                ForEach(graphCurve.points, id: \.x) { point in
+                    PointMark(x: .value("x", point.x), y: .value("y", point.y))
+                        .foregroundStyle(Color.black)
+                        .symbolSize(0.5)
+                }
+            }
+        }
     }
 }
 
