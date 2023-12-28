@@ -78,7 +78,6 @@
 				3CF756082B3CFBFA00E4708E /* ViewModel.swift */,
 				3CF755E92B3CAD8A00E4708E /* ContentView.swift */,
 				3CF756042B3CFB0A00E4708E /* Utilities.swift */,
-				3CF7560C2B3D774E00E4708E /* Unused.swift */,
 				3CF755EB2B3CAD8B00E4708E /* Assets.xcassets */,
 				3CF755ED2B3CAD8B00E4708E /* QuadTree.entitlements */,
 			);
@@ -92,6 +91,7 @@
 				3CF755F62B3CADDD00E4708E /* Cell.swift */,
 				3CF755F92B3CB47F00E4708E /* Point.swift */,
 				3CF7560A2B3D36F200E4708E /* Isoline.swift */,
+				3CF7560C2B3D774E00E4708E /* Unused.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
