@@ -19,7 +19,9 @@ class ViewModel: ObservableObject {
 
     // function to render
     func function(point: Point) -> Double {
-        return pow(point.x, 2) + pow(point.y, 2) - 6
+        return pow(point.x, 2) + pow(point.y, 2) - 10
+//        return tan(pow(point.x, 2) + pow(point.y, 2)) - 1
+//        return 1
     }
 
     // MARK: - Rendering
@@ -42,6 +44,7 @@ class ViewModel: ObservableObject {
 
         var displayedCells = [DisplayedCell]()
         root.levelOrderTraversal { cell in
+            
             let frame = CGRect(
                 x: cell.frame.bL.point.x,
                 y: cell.frame.bL.point.y,

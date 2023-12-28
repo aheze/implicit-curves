@@ -37,6 +37,14 @@ struct ContentView: View {
                                     return .blue
                                 case 5:
                                     return .indigo
+                                case 6:
+                                    return .purple
+                                case 7:
+                                    return .pink
+                                case 8:
+                                    return .teal
+                                case 9:
+                                    return .brown
                                 default:
                                     return .black
                                 }
@@ -49,7 +57,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .border(Color.black, width: 5)
+                .border(Color.black, width: 2)
         }
         .padding()
     }
