@@ -74,9 +74,9 @@
 		3CF755F82B3CADE100E4708E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3CF756022B3CF7DE00E4708E /* Global.swift */,
 				3CF755F62B3CADDD00E4708E /* Cell.swift */,
 				3CF755F92B3CB47F00E4708E /* Point.swift */,
-				3CF756022B3CF7DE00E4708E /* Global.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

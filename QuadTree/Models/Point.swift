@@ -6,7 +6,7 @@
 //  Copyright © 2023 Andrew Zheng. All rights reserved.
 //
 
-import SwiftUI
+import Foundation
 
 struct Point: Equatable {
     var x: Double
