@@ -6,7 +6,7 @@ Graph implicit curves!
 
 y * pow(x - y, 2) - (4 * x) - 8 | pow(x, 2) + pow(y, 2) - 5 | tan(pow(x, 2) + pow(y, 2)) - 1
 --- | --- | ---
-![Screenshot 2023-12-28 at 1 20 30 AM](https://github.com/aheze/QuadTree/assets/49819455/42af00e1-53d6-48bc-b634-759ffef39a83) | ![Screenshot 2023-12-28 at 1 20 40 AM](https://github.com/aheze/QuadTree/assets/49819455/a19983dc-d246-40c5-bf36-4edef82421cc) | ![Screenshot 2023-12-28 at 1 20 48 AM](https://github.com/aheze/QuadTree/assets/49819455/1ded10b0-00b5-4759-98d1-c05e4061e1a6)
+![a line and a two curves](https://github.com/aheze/QuadTree/assets/49819455/42af00e1-53d6-48bc-b634-759ffef39a83) | ![circle](https://github.com/aheze/QuadTree/assets/49819455/a19983dc-d246-40c5-bf36-4edef82421cc) | ![many nested circles with rendering artifacts near the edges due to rounding](https://github.com/aheze/QuadTree/assets/49819455/1ded10b0-00b5-4759-98d1-c05e4061e1a6)
 
 
 
