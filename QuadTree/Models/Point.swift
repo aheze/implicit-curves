@@ -46,4 +46,3 @@ struct ValuedPoint {
         return valuedPoint
     }
 }
-
