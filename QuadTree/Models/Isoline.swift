@@ -363,8 +363,6 @@ class CurveTracer {
             if let first = activeCurve.first {
                 // close back the loop
                 activeCurve.append(first)
-            } else {
-                print("no first.")
             }
         }
     }

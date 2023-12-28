@@ -14,57 +14,15 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
 
             Color.clear
                 .frame(width: viewModel.viewportSize.width, height: viewModel.viewportSize.height)
                 .overlay {
-                    ZStack(alignment: .topLeading) {
-                        ForEach(viewModel.displayedCells) { displayedCell in
-                            let color: Color = {
-                                switch displayedCell.cell.depth {
-                                case 0:
-                                    return .red
-                                case 1:
-                                    return .orange
-                                case 2:
-                                    return .yellow
-                                case 3:
-                                    return .green
-                                case 4:
-                                    return .teal
-                                case 5:
-                                    return .blue
-                                case 6:
-                                    return .purple
-                                case 7:
-                                    return .pink
-                                case 8:
-                                    return .brown
-                                default:
-                                    return .black
-                                }
-                            }()
-
-                            Rectangle()
-                                .stroke(color, lineWidth: 1)
-                                .frame(width: displayedCell.frame.width, height: displayedCell.frame.height)
-                                .offset(x: displayedCell.frame.minX, y: displayedCell.frame.minY)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                }
-                .drawingGroup()
-                .opacity(0.1)
-                .overlay {
                     chart
                 }
-                .border(Color.blue.gradient.opacity(0.5), width: 2)
         }
         .padding()
+        .navigationTitle("Quadtree")
     }
 
     var chart: some View {
@@ -72,7 +30,7 @@ struct ContentView: View {
             ForEach(viewModel.graphCurves) { graphCurve in
                 ForEach(graphCurve.points, id: \.x) { point in
                     LineMark(x: .value("x", point.x), y: .value("y", point.y), series: .value("Series", "\(graphCurve.id.uuidString)"))
-                        .foregroundStyle(Color.black)
+                        .foregroundStyle(Color.blue)
                 }
             }
         }

@@ -20,6 +20,7 @@
 		3CF756072B3CFBDA00E4708E /* Rendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF756062B3CFBDA00E4708E /* Rendering.swift */; };
 		3CF756092B3CFBFA00E4708E /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF756082B3CFBFA00E4708E /* ViewModel.swift */; };
 		3CF7560B2B3D36F200E4708E /* Isoline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF7560A2B3D36F200E4708E /* Isoline.swift */; };
+		3CF7560D2B3D774E00E4708E /* Unused.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF7560C2B3D774E00E4708E /* Unused.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		3CF756062B3CFBDA00E4708E /* Rendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rendering.swift; sourceTree = "<group>"; };
 		3CF756082B3CFBFA00E4708E /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		3CF7560A2B3D36F200E4708E /* Isoline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Isoline.swift; sourceTree = "<group>"; };
+		3CF7560C2B3D774E00E4708E /* Unused.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unused.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				3CF756082B3CFBFA00E4708E /* ViewModel.swift */,
 				3CF755E92B3CAD8A00E4708E /* ContentView.swift */,
 				3CF756042B3CFB0A00E4708E /* Utilities.swift */,
+				3CF7560C2B3D774E00E4708E /* Unused.swift */,
 				3CF755EB2B3CAD8B00E4708E /* Assets.xcassets */,
 				3CF755ED2B3CAD8B00E4708E /* QuadTree.entitlements */,
 			);
@@ -173,6 +176,7 @@
 				3CF756052B3CFB0A00E4708E /* Utilities.swift in Sources */,
 				3CF756072B3CFBDA00E4708E /* Rendering.swift in Sources */,
 				3CF755FA2B3CB47F00E4708E /* Point.swift in Sources */,
+				3CF7560D2B3D774E00E4708E /* Unused.swift in Sources */,
 				3CF755EA2B3CAD8A00E4708E /* ContentView.swift in Sources */,
 				3CF755E82B3CAD8A00E4708E /* QuadTreeApp.swift in Sources */,
 				3CF756032B3CF7DE00E4708E /* Global.swift in Sources */,

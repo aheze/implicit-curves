@@ -201,8 +201,8 @@ extension Global {
         xMax: Double,
         yMin: Double,
         yMax: Double,
-        minDepth: Int = 5,
-        maxCells: Int = 10000,
+        minDepth: Int = 6,
+        maxCells: Int = 20000,
         tolerance: Double? = nil
     ) -> [[Point]] {
         let tol: Double
