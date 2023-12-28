@@ -41,7 +41,7 @@ class Triangle {
 // (https://people.engr.tamu.edu/schaefer/research/iso_simplicial.pdf),
 // but this does not currently implement placing dual vertices based on the gradient.
 class Triangulator {
-    var triangles: [Triangle]
+    var triangles = [Triangle]()
     
     // ID to triangle
     var hangingNext = [Point: Triangle]()
@@ -50,9 +50,7 @@ class Triangulator {
     
     var function: (Point) -> Double
     
-    init(triangles: [Triangle], hangingNext: [Point: Triangle] = [Point: Triangle](), root: Cell, function: @escaping (Point) -> Double) {
-        self.triangles = triangles
-        self.hangingNext = hangingNext
+    init(root: Cell, function: @escaping (Point) -> Double) {
         self.root = root
         self.function = function
     }
@@ -337,7 +335,6 @@ class CurveTracer {
         
         // Iterate backwards to the start of a connected curve
         while let previous = triangle.previous {
-            
             // check if points to the same address
             if previous === startTriangle {
                 closedLoop = true

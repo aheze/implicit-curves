@@ -189,3 +189,34 @@ extension Global {
         return triangles
     }
 }
+
+// MARK: - Isoline
+
+extension Global {
+    // Get the curve representing fn([x,y])=0 on pmin[0] ≤ x ≤ pmax[0] ∩ pmin[1] ≤ y ≤ pmax[1]
+    // Returns as a list of curves, where each curve is a list of points
+    static func plotIsoline(
+        function: @escaping (Point) -> Double,
+        xMin: Double,
+        xMax: Double,
+        yMin: Double,
+        yMax: Double,
+        minDepth: Int = 5,
+        maxCells: Int = 10000,
+        tolerance: Double? = nil
+    ) -> [[Point]] {
+        let tol: Double
+        if let tolerance {
+            tol = tolerance
+        } else {
+            tol = (xMax - xMin) / 1000
+        }
+
+        let root = buildTree(function: function, xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, minDepth: minDepth, maxCells: maxCells, tolerance: tol)
+        let triangulator = Triangulator(root: root, function: function)
+        let triangles = triangulator.triangulate()
+        let curveTracer = CurveTracer(triangles: triangles, function: function, tolerance: tol)
+        let curves = curveTracer.trace()
+        return curves
+    }
+}
