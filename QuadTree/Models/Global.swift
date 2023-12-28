@@ -149,7 +149,7 @@ extension Global {
             return false
         } else if cell.frame.vertices.contains(where: { $0.value.isNaN }) {
             // straddling defined and undefined
-            
+
             return true
         } else {
             // simple approach: only descend if we cross the isoline
@@ -165,5 +165,27 @@ extension Global {
 
             return false
         }
+    }
+}
+
+// MARK: Triangle
+
+extension Global {
+    // a, b, c, d should be clockwise oriented, with center on the inside of that quad
+    static func fourTriangles(
+        a: ValuedPoint,
+        b: ValuedPoint,
+        c: ValuedPoint,
+        d: ValuedPoint,
+        center: ValuedPoint
+    ) -> (Triangle, Triangle, Triangle, Triangle) {
+        let triangles = (
+            Triangle(vertices: [a, b, center]),
+            Triangle(vertices: [b, c, center]),
+            Triangle(vertices: [c, d, center]),
+            Triangle(vertices: [d, a, center])
+        )
+
+        return triangles
     }
 }

@@ -30,24 +30,6 @@ class Triangle {
     }
 }
 
-// a, b, c, d should be clockwise oriented, with center on the inside of that quad
-func fourTriangles(
-    a: ValuedPoint,
-    b: ValuedPoint,
-    c: ValuedPoint,
-    d: ValuedPoint,
-    center: ValuedPoint
-) -> (Triangle, Triangle, Triangle, Triangle) {
-    let triangles = (
-        Triangle(vertices: [a, b, center]),
-        Triangle(vertices: [b, c, center]),
-        Triangle(vertices: [c, d, center]),
-        Triangle(vertices: [d, a, center])
-    )
-    
-    return triangles
-}
-
 // While triangulating, also compute the isolines.
 //
 // Divides each quad into 8 triangles from the quad's center. This simplifies
@@ -82,7 +64,7 @@ class Triangulator {
     
     func triangulate(inside quad: Cell) {
         for child in quad.children {
-            triangulate(inside: quad)
+            triangulate(inside: child)
         }
         
         // bL, bR
@@ -91,12 +73,11 @@ class Triangulator {
         // tL, tR
         triangulateCrossingRow(a: quad.children[2], b: quad.children[3])
         
-//        for child in quad.children:
-//            self.triangulate_inside(child)
-//        self.triangulate_crossing_row(quad.children[0], quad.children[1])
-//        self.triangulate_crossing_row(quad.children[2], quad.children[3])
-//        self.triangulate_crossing_col(quad.children[0], quad.children[2])
-//        self.triangulate_crossing_col(quad.children[1], quad.children[3])
+        // bL, tL
+        triangulateCrossingColumn(a: quad.children[0], b: quad.children[2])
+        
+        // bR, tR
+        triangulateCrossingColumn(a: quad.children[1], b: quad.children[3])
     }
     
     func triangulateCrossingRow(a: Cell, b: Cell) {
@@ -121,14 +102,13 @@ class Triangulator {
             // big cell to left | tL cell
             triangulateCrossingRow(a: a, b: b.children[2])
         } else {
-            // both a and b don't have children
+            // a and b are minimal 2-cells (need to have triangles in between)
             let faceDualA = getFaceDual(frame: a.frame)
             let faceDualB = getFaceDual(frame: b.frame)
             
             // Add the four triangles from the centers of a and b to the shared edge between them
             if a.depth < b.depth {
-                // a is a big cell
-                // b is small cell
+                // a is a big cell, b is small cell
                 //
                 // +---+---+---+---+
                 // |       | b |   |
@@ -141,7 +121,7 @@ class Triangulator {
                 let edgeDual = getEdgeDual(p1: b.frame.tL, p2: b.frame.bL)
                 
                 // triangles arranged like a diamond
-                let triangles = fourTriangles(
+                let triangles = Global.fourTriangles(
                     a: b.frame.tL,
                     b: faceDualB,
                     c: b.frame.bL,
@@ -151,16 +131,17 @@ class Triangulator {
                 
                 addFourTriangles(triangles: triangles)
             } else {
-                // same depth, a and b are adjacent
+                // a is a small cell, b is a big cell
+                // OR: same depth, a and b are adjacent horizontally
                 let edgeDual = getEdgeDual(p1: a.frame.tR, p2: b.frame.bR)
                 
-                // result of code
+                // result of code for same depth
                 // +---+---+---+---+
                 // |     / | \     |
                 // +   a   +   b   +
                 // |     \ | /     |
                 // +---+---+---+---+
-                let triangles = fourTriangles(
+                let triangles = Global.fourTriangles(
                     a: a.frame.tR,
                     b: faceDualB,
                     c: a.frame.bR,
@@ -168,18 +149,58 @@ class Triangulator {
                     center: edgeDual
                 )
                 
-                // desired result:
-                // +---+---+---+---+
-                // |     / | \     |
-                // +   a   +   b   +
-                // | /     |     \ |
-                // +---+---+---+---+
-                
                 addFourTriangles(triangles: triangles)
             }
         }
     }
     
+    // Mostly a copy-paste of triangulate_crossing_row. For n-dimensions,
+    // want to pass a dir index into a shared triangulate_crossing_dir function instead
+    func triangulateCrossingColumn(a: Cell, b: Cell) {
+        if !a.children.isEmpty, !b.children.isEmpty {
+            // tL cell | bL cell
+            triangulateCrossingColumn(a: a.children[2], b: b.children[0])
+            
+            // tR cell | bT cell
+            triangulateCrossingColumn(a: a.children[3], b: b.children[1])
+        } else if !a.children.isEmpty {
+            triangulateCrossingColumn(a: a.children[2], b: b)
+            triangulateCrossingColumn(a: a.children[3], b: b)
+        } else if !b.children.isEmpty {
+            triangulateCrossingColumn(a: a, b: b.children[0])
+            triangulateCrossingColumn(a: a, b: b.children[1])
+        } else {
+            // a and b are minimal 2-cells (need to have triangles in between)
+            
+            let faceDualA = getFaceDual(frame: a.frame)
+            let faceDualB = getFaceDual(frame: b.frame)
+            
+            // Add the four triangles from the centers of a and b to the shared edge between them
+            if a.depth < b.depth {
+                // b is smaller
+                let edgeDual = getEdgeDual(p1: b.frame.bL, p2: b.frame.bR)
+                let triangles = Global.fourTriangles(
+                    a: b.frame.bL,
+                    b: faceDualB,
+                    c: b.frame.bR,
+                    d: faceDualA,
+                    center: edgeDual
+                )
+                addFourTriangles(triangles: triangles)
+            } else {
+                let edgeDual = getEdgeDual(p1: b.frame.tL, p2: b.frame.tR)
+                let triangles = Global.fourTriangles(
+                    a: a.frame.tL,
+                    b: faceDualB,
+                    c: a.frame.tR,
+                    d: faceDualA,
+                    center: edgeDual
+                )
+                addFourTriangles(triangles: triangles)
+            }
+        }
+    }
+
     func addFourTriangles(triangles: (Triangle, Triangle, Triangle, Triangle)) {
         nextSandwichTriangles(a: triangles.0, b: triangles.1, c: triangles.2)
         nextSandwichTriangles(a: triangles.1, b: triangles.2, c: triangles.3)
