@@ -12,6 +12,9 @@
 		3CF755EC2B3CAD8B00E4708E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CF755EB2B3CAD8B00E4708E /* Assets.xcassets */; };
 		3CF755F72B3CADDD00E4708E /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF755F62B3CADDD00E4708E /* Cell.swift */; };
 		3CF755FA2B3CB47F00E4708E /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CF755F92B3CB47F00E4708E /* Point.swift */; };
+		3CF755FD2B3CF68E00E4708E /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 3CF755FC2B3CF68E00E4708E /* Collections */; };
+		3CF755FF2B3CF68E00E4708E /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 3CF755FE2B3CF68E00E4708E /* DequeModule */; };
+		3CF756012B3CF68E00E4708E /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 3CF756002B3CF68E00E4708E /* OrderedCollections */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CF755FD2B3CF68E00E4708E /* Collections in Frameworks */,
+				3CF755FF2B3CF68E00E4708E /* DequeModule in Frameworks */,
+				3CF756012B3CF68E00E4708E /* OrderedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +94,11 @@
 			dependencies = (
 			);
 			name = QuadTree;
+			packageProductDependencies = (
+				3CF755FC2B3CF68E00E4708E /* Collections */,
+				3CF755FE2B3CF68E00E4708E /* DequeModule */,
+				3CF756002B3CF68E00E4708E /* OrderedCollections */,
+			);
 			productName = QuadTree;
 			productReference = 3CF755E42B3CAD8A00E4708E /* QuadTree.app */;
 			productType = "com.apple.product-type.application";
@@ -116,6 +127,9 @@
 				Base,
 			);
 			mainGroup = 3CF755DB2B3CAD8A00E4708E;
+			packageReferences = (
+				3CF755FB2B3CF68E00E4708E /* XCRemoteSwiftPackageReference "swift-collections" */,
+			);
 			productRefGroup = 3CF755E52B3CAD8A00E4708E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -361,6 +375,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3CF755FB2B3CF68E00E4708E /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3CF755FC2B3CF68E00E4708E /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CF755FB2B3CF68E00E4708E /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		3CF755FE2B3CF68E00E4708E /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CF755FB2B3CF68E00E4708E /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
+		};
+		3CF756002B3CF68E00E4708E /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3CF755FB2B3CF68E00E4708E /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3CF755DC2B3CAD8A00E4708E /* Project object */;
 }

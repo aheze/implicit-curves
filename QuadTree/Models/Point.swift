@@ -57,7 +57,7 @@ func binarySearchZero(
     let distanceY = abs(p2.point.y - p1.point.y)
     
     // Use isZero to make sure it's not an asymptote like at x=0 on f(x,y) = 1/(xy) - 1
-    if distanceX < tolerance || distanceY < tolerance {
+    if distanceX < tolerance && distanceY < tolerance {
         // Binary search stop condition: too small to matter
         let valuedPoint = ValuedPoint.intersectZero(p1: p1, p2: p2, function: function)
         
