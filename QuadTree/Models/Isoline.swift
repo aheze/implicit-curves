@@ -263,7 +263,7 @@ class Triangulator {
 extension Triangulator {
     // Returns the dual point on an edge p1--p2
     func getEdgeDual(p1: ValuedPoint, p2: ValuedPoint) -> ValuedPoint {
-        if (p1.value > 0) != (p1.value > 0) {
+        if (p1.value > 0) != (p2.value > 0) {
             // The edge crosses the isoline, so take the midpoint
             return ValuedPoint.midpoint(p1: p1, p2: p2, function: function)
         }
