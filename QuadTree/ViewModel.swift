@@ -22,9 +22,9 @@ class ViewModel: ObservableObject {
         let x = point.x
         let y = point.y
 
-//        return y * pow((x - y), 2) - (4 * x) - 8
+        return y * pow((x - y), 2) - (4 * x) - 8
 //        return pow(x, 2) + pow(y, 2) - 5
-        return tan(pow(x, 2) + pow(y, 2)) - 1
+//        return tan(pow(x, 2) + pow(y, 2)) - 1
     }
 
     // MARK: - Rendering
