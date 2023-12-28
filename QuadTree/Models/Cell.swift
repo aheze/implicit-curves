@@ -9,27 +9,6 @@
 import Collections
 import SwiftUI
 
-func verticesFromExtremes(
-    xMin: Double,
-    xMax: Double,
-    yMin: Double,
-    yMax: Double,
-    function: (Point) -> Double
-) -> Frame {
-    let bLPoint = Point(x: xMin, y: yMin)
-    let bRPoint = Point(x: xMax, y: yMin)
-    let tLPoint = Point(x: xMin, y: yMax)
-    let tRPoint = Point(x: xMax, y: yMax)
-
-    let bL = ValuedPoint(point: bLPoint, value: function(bLPoint))
-    let bR = ValuedPoint(point: bRPoint, value: function(bRPoint))
-    let tL = ValuedPoint(point: tLPoint, value: function(tLPoint))
-    let tR = ValuedPoint(point: tRPoint, value: function(tRPoint))
-
-    let frame = Frame(bL: bL, bR: bR, tL: tL, tR: tR)
-    return frame
-}
-
 struct Frame {
     var bL: ValuedPoint
     var bR: ValuedPoint
@@ -73,7 +52,7 @@ class Cell {
             let xMax = (frame.tR.point.x + vertex.point.x) / 2
             let yMin = (frame.bL.point.y + vertex.point.y) / 2
             let yMax = (frame.tR.point.y + vertex.point.y) / 2
-            let frame = verticesFromExtremes(xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, function: function)
+            let frame = Global.frameFromCorners(xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, function: function)
 
             let newQuad = Cell(frame: frame, depth: depth + 1, children: [], parent: self, childDirection: index)
             self.children.append(newQuad)
@@ -228,7 +207,7 @@ func buildTree(
     // min_depth takes precedence over max_quads
     let maxCells = max(maxCellFromMinDepth, maxCells)
 
-    let frame = verticesFromExtremes(xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, function: function)
+    let frame = Global.frameFromCorners(xMin: xMin, xMax: xMax, yMin: yMin, yMax: yMax, function: function)
 
     // root's childDirection is 0, even though none is reasonable
     let root = Cell(frame: frame, depth: 0, children: [], parent: nil, childDirection: 0)
@@ -253,52 +232,3 @@ func buildTree(
 
     return root
 }
-
-// def build_tree(
-//    dim: int,
-//    fn: Func,
-//    pmin: Point,
-//    pmax: Point,
-//    min_depth: int,
-//    max_cells: int,
-//    tol: np.ndarray,
-// ) -> Cell:
-//    branching_factor = 1 << dim
-//    # min_depth takes precedence over max_quads
-//    max_cells = max(branching_factor ** min_depth, max_cells)
-//    vertices = vertices_from_extremes(dim, pmin, pmax, fn)
-//
-//    # root's childDirection is 0, even though none is reasonable
-//    current_quad = root = Cell(dim, vertices, 0, [], None, 0)
-//    quad_queue = deque([root])
-//    leaf_count = 1
-//
-//    while len(quad_queue) > 0 and leaf_count < max_cells:
-//        current_quad = quad_queue.popleft()
-//        if current_quad.depth < min_depth or should_descend_deep_cell(
-//            current_quad, tol
-//        ):
-//            current_quad.compute_children(fn)
-//            quad_queue.extend(current_quad.children)
-//            # add 4 for the new quads, subtract 1 for the old quad not being a leaf anymore
-//            leaf_count += branching_factor - 1
-//    return root
-
-//
-//
-//// unused
-//// func walkLeavesInDirection(axis: Int, direction: Int) -> AnyIterator<Cell> {
-////    let walked = self.walkInDirection(axis: axis, direction: direction)
-////
-////    return AnyIterator {
-////        if let walked {
-////            let leaves = walked.getLeavesInDirection(axis: axis, direction: direction)
-////            for leaf in leaves {
-////                return leaf
-////            }
-////            return nil
-////        } else {
-////            return nil
-////        }
-////    }
-//// }
