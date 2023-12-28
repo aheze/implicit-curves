@@ -85,6 +85,12 @@ class Triangulator {
             triangulate(inside: quad)
         }
         
+        // bL, bR
+        triangulateCrossingRow(a: quad.children[0], b: quad.children[1])
+        
+        // tL, tR
+        triangulateCrossingRow(a: quad.children[2], b: quad.children[3])
+        
 //        for child in quad.children:
 //            self.triangulate_inside(child)
 //        self.triangulate_crossing_row(quad.children[0], quad.children[1])
@@ -145,7 +151,15 @@ class Triangulator {
                 
                 addFourTriangles(triangles: triangles)
             } else {
+                // same depth, a and b are adjacent
                 let edgeDual = getEdgeDual(p1: a.frame.tR, p2: b.frame.bR)
+                
+                // result of code
+                // +---+---+---+---+
+                // |     / | \     |
+                // +   a   +   b   +
+                // |     \ | /     |
+                // +---+---+---+---+
                 let triangles = fourTriangles(
                     a: a.frame.tR,
                     b: faceDualB,
@@ -153,6 +167,13 @@ class Triangulator {
                     d: faceDualA,
                     center: edgeDual
                 )
+                
+                // desired result:
+                // +---+---+---+---+
+                // |     / | \     |
+                // +   a   +   b   +
+                // | /     |     \ |
+                // +---+---+---+---+
                 
                 addFourTriangles(triangles: triangles)
             }
