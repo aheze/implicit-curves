@@ -148,6 +148,7 @@ extension Global {
             return false
         } else if cell.frame.vertices.contains(where: { $0.value.isNaN }) {
             // straddling defined and undefined
+            
             return true
         } else {
             // simple approach: only descend if we cross the isoline
@@ -156,7 +157,7 @@ extension Global {
             // e.g. by incorporating gradient or second-derivative
             // tests, etc., to cancel descending in approximately linear regions
             for valuedPoint in cell.frame.vertices.dropFirst() {
-                if valuedPoint.value != cell.frame.bL.value {
+                if valuedPoint.value.sign != cell.frame.bL.value.sign {
                     return true
                 }
             }

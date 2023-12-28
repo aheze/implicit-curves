@@ -12,14 +12,20 @@ class ViewModel: ObservableObject {
     // MARK: - Configuration
 
     @Published var viewportSize = CGSize(width: 500, height: 300)
-    let xDomain = Double(-5) ... Double(5)
+    let xDomain = Double(-10) ... Double(10)
     let yDomain = Double(-3) ... Double(3)
     var domainWidth: Double { xDomain.upperBound - xDomain.lowerBound }
     var domainHeight: Double { yDomain.upperBound - yDomain.lowerBound }
 
     // function to render
     func function(point: Point) -> Double {
-        return pow(point.x, 2) + pow(point.y, 2) - 10
+//        return point.y * (x-y)^2 = 4x+8
+        let x = point.x
+        let y = point.y
+        
+        return y * pow((x - y), 2) - (4 * x) - 8
+        
+//        return pow(point.x, 2) + pow(point.y, 2) - 10
 //        return tan(pow(point.x, 2) + pow(point.y, 2)) - 1
 //        return 1
     }
@@ -37,7 +43,7 @@ class ViewModel: ObservableObject {
             xMax: xDomain.upperBound,
             yMin: yDomain.lowerBound,
             yMax: yDomain.upperBound,
-            minDepth: 5,
+            minDepth: 3,
             maxCells: 5000,
             tolerance: domainWidth / 1000
         )

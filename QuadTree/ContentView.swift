@@ -32,32 +32,33 @@ struct ContentView: View {
                                 case 2:
                                     return .yellow
                                 case 3:
-                                    return .orange
+                                    return .green
                                 case 4:
-                                    return .blue
+                                    return .teal
                                 case 5:
-                                    return .indigo
+                                    return .blue
                                 case 6:
                                     return .purple
                                 case 7:
                                     return .pink
                                 case 8:
-                                    return .teal
-                                case 9:
                                     return .brown
                                 default:
                                     return .black
                                 }
                             }()
                             
-                            Rectangle()
-                                .stroke(color, lineWidth: 1)
-                                .frame(width: displayedCell.frame.width, height: displayedCell.frame.height)
-                                .offset(x: displayedCell.frame.minX, y: displayedCell.frame.minY)
+//                            if displayedCell.cell.depth == 4 {
+                                Rectangle()
+                                    .stroke(color, lineWidth: 1)
+                                    .frame(width: displayedCell.frame.width, height: displayedCell.frame.height)
+                                    .offset(x: displayedCell.frame.minX, y: displayedCell.frame.minY)
+//                            }
                         }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
-                .border(Color.black, width: 2)
+                .border(Color.blue.gradient.opacity(0.5), width: 2)
         }
         .padding()
     }
